@@ -41,3 +41,31 @@ axes = axes.ravel()
 for i in np.arange(0, L * W):  
     axes[i].imshow(train_images[i],cmap='gray')
 plt.subplots_adjust(wspace=1)
+
+
+# Build model to train data
+model = keras.models.Sequential()
+model.add(tf.keras.Input(shape = (28,28,1)))
+model.add(keras.layers.Conv2D(64,3,1, padding = 'same' ,activation = 'relu')) # parmeter = 64((3*3*1)+1)
+model.add(keras.layers.BatchNormalization()) # y_bar = gamma*Xi + Beta
+model.add(keras.layers.Conv2D(64,3,1, padding = 'same' ,activation = 'relu')) # parmeter = 64((3*3*64)+1)
+model.add(keras.layers.BatchNormalization()) # 
+model.add(keras.layers.MaxPooling2D(2))
+model.add(keras.layers.Conv2D(128,3,1, padding = 'same', activation = 'relu'))# parmeter = 128((3*3*64)+1)
+model.add(keras.layers.BatchNormalization())
+model.add(keras.layers.Conv2D(128,3,1, padding = 'same' ,activation = 'relu')) # parmeter = 128((3*3*128)+1)
+model.add(keras.layers.BatchNormalization())
+model.add(keras.layers.MaxPooling2D(2))
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(128, activation = 'relu')) # parmeter =  128 *(flatten +1) 
+model.add(keras.layers.Dense(10, activation = 'softmax')) # parmeter = 10 (128+1) 
+
+model.summary()
+
+
+model.compile(optimizer = 'adam',
+              loss = tf.keras.losses.SparseCategoricalCrossentropy(),
+              metrics = ['Accuracy'])
+history_data = model.fit(train_images, train_labels,
+                         validation_data = (test_images, test_labels),
+                         batch_size = 512, epochs = 100)
