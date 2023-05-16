@@ -69,3 +69,36 @@ model.compile(optimizer = 'adam',
 history_data = model.fit(train_images, train_labels,
                          validation_data = (test_images, test_labels),
                          batch_size = 512, epochs = 100)
+
+
+# train loss and validation loss visualization
+plt.plot(history_data.history['loss'], label = 'train_loss')
+plt.plot(history_data.history['val_loss'], label = 'val_loss')
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.legend()
+plt.show()
+
+# Accuracy visualization
+plt.plot(history_data.history['Accuracy'], label = 'train_Accuracy')
+plt.plot(history_data.history['val_Accuracy'], label = 'val_Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+img = plt.imread('test.png')
+plt.imshow(img)
+plt.show()
+
+img = load_img('test.png', grayscale=True, target_size=(28, 28))
+img = img_to_array(img)
+img = img.reshape(1, 28, 28, 1)
+img = img / 255.0
+predictions = np.argmax(model.predict(img),axis=1)
+predict = int(predictions[0])
+print('This image belongs to class : ', predict , diction[predict])
+print(diction)
+
+predicted_classes = model.predict(test_images)
+predicted_classes = np.argmax(predicted_classes , axis = 1)
