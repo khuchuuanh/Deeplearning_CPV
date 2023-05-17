@@ -9,6 +9,7 @@ from tensorflow.keras.utils import img_to_array
 from sklearn.metrics import confusion_matrix
 import numpy as np
 import pandas as pd
+import seaborn as sns
 
 (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 print(train_images.shape)
@@ -102,3 +103,33 @@ print(diction)
 
 predicted_classes = model.predict(test_images)
 predicted_classes = np.argmax(predicted_classes , axis = 1)
+
+# Confusion matrix
+labels = [0, 1, 2,3,4,5,6,7,8,9]
+cm = confusion_matrix(test_labels, predicted_classes)
+fig, ax = plt.subplots()
+im = ax.imshow(cm, cmap=plt.cm.Reds)
+ax.set_xticks(labels)
+ax.set_yticks(labels)
+ax.set_xticklabels(labels)
+ax.set_yticklabels(labels)
+ax.set_xlabel('Actual')
+ax.set_ylabel('Prediction')
+ax.set_title('Confusion Matrix')
+for i in range(len(labels)):
+    for j in range(len(labels)):
+        text = ax.text(j, i, cm[i, j], ha='center', va='center', color='white')
+# Thêm colorbar
+cbar = ax.figure.colorbar(im, ax=ax)
+plt.show()
+
+cm = confusion_matrix(test_labels,predicted_classes, labels=labels)
+sns.heatmap(cm,
+            annot=True)
+plt.ylabel('Prediction',fontsize=13)
+plt.xlabel('Actual',fontsize=13)
+plt.title('Confusion Matrix',fontsize=17)
+plt.show()
+
+# classification report 
+print(classification_report(test_labels, predicted_classes))
