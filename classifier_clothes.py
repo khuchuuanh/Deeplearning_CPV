@@ -44,6 +44,17 @@ for i in np.arange(0, L * W):
 plt.subplots_adjust(wspace=1)
 
 
+# check point
+
+checpoint_path = "./Deep_learning/checkpoitn_direction/model_checkpoint.ckpt"
+checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+    checpoint_path,
+    save_weights_only= True,
+    save_best_only= True,
+    monitor= "val_loss",     # theo dõi và quyết định  lưu checkpoint tốt nhất
+    verbose= 1
+)
+
 # Build model to train data
 model = keras.models.Sequential()
 model.add(tf.keras.Input(shape = (28,28,1)))
@@ -69,7 +80,8 @@ model.compile(optimizer = 'adam',
               metrics = ['Accuracy'])
 history_data = model.fit(train_images, train_labels,
                          validation_data = (test_images, test_labels),
-                         batch_size = 512, epochs = 100)
+                         batch_size = 512, epochs = 100,
+                         callbacks = [checkpoint_callback])
 
 
 # train loss and validation loss visualization
