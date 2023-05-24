@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from PIL import Image
 import numpy as np
+from sklearn.model_selection import train_test_split
 
 label_data = pd.read_csv('driving_data/steering angle.csv')
 
@@ -25,5 +26,18 @@ print(labels.shape)
 
 images = images / 255.0
 
-dataset = tf.data.Dataset.from_tensor_slices((images, labels))
+train_images, test_images, train_labels, test_labels = train_test_split(images,labels, test_size= 0.2)
+
+train_images = np.array(train_images)
+test_images = np.array(test_images)
+train_labels = np.array(train_labels)
+test_labels = np.array(test_labels)
+
+train_images = train_images.reshape((-1, 66,200,3))
+test_images = test_images.reshape((-1, 66,200,3))
+
+
+
+
+
 
