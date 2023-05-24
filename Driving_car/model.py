@@ -50,3 +50,40 @@ b_conv5 = bias_variable([64])
 
 h_conv5 = tf.nn.relu(conv2d(h_conv4, W_conv5, 1) + b_conv5)
 
+# FCL 1
+
+W_fc1 = weight_variable([1152,1164])
+b_fc1 = bias_variable([1164])
+
+h_conv5_flat = tf.reshape(h_conv5, [-1, 1152])
+h_fc1 = tf.nn.relu(tf.matmul(h_conv5_flat, W_fc1) + b_fc1)
+
+keep_prob = tf.placeholder(tf.float32)
+h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+
+# FCL2
+W_fc2 = weight_variable([1164,100])
+b_fc2 = bias_variable([100])
+
+h_fc2 = tf.nn.relu(tf.matmul(h_fc1_drop,W_fc2 ) +b_fc2 )
+h_fc2_drop = tf.nn.dropout(h_fc2, keep_prob)
+
+# FCL3
+W_fc3 = weight_variable([100, 50])
+b_fc3 = bias_variable([50])
+
+h_fc3 = tf.nn.relu(tf.matmul(h_fc2_drop,W_fc3) + b_fc3)
+h_fc3_drop = tf.nn.dropout(h_fc3, keep_prob)
+
+# FCL4
+W_fc4 = weight_variable([50,10])
+b_fc4 = bias_variable([10])
+
+h_fc4 = tf.nn.relu(tf.matmul(h_fc3_drop,W_fc4) + b_fc4)
+h_fc4_drop = tf.nn.dropout(h_fc4, keep_prob)
+
+# output
+W_fc5 = weight_variable([10,1])
+b_fc5 = bias_variable([1])
+
+y  = tf.multiply(tf.atan(tf.matmul(h_fc4_drop, W_fc5)), 2) # tf.atan : trả kết quả về giá trị góc
