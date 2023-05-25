@@ -11,7 +11,7 @@ def bias_variable(shape):
     return  tf.Variable(initial)
 
 def conv2d(x, W, stride):
-    return tf.nn.conv2d(x, W, stride = [1, stride, stride, 1], padding = 'VALID')
+    return tf.nn.conv2d(x, W, strides = [1, stride, stride, 1], padding = 'VALID')
 
 x = tf.placeholder(tf.float32, shape = [None, 66,200,3])
 y_ = tf.placeholder(tf.float32, shape = [None, 1])
@@ -26,7 +26,7 @@ b_conv1 = bias_variable([24])
 h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1, 2) + b_conv1)
 
 # second convolutional layer
-W_conv2 = weight_variable([5,5,3,24])
+W_conv2 = weight_variable([5,5,24,36])
 b_conv2 = bias_variable([36])
 
 h_conv2 = tf.nn.relu(conv2d(h_conv1, W_conv2, 2) + b_conv2)
