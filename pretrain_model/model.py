@@ -7,29 +7,22 @@ from tensorflow.keras.preprocessing import  image_dataset_from_directory
 
 # Visualize data
 
-x = plt.imread('./hymenoptera_data/train/ants/0013035.jpg')
-plt.imshow(x)
-print(x.shape)
-
 
 
 
 # Data processing
 
-train_dataset = image_dataset_from_directory('./hymenoptera_data/train',
+train_dataset = image_dataset_from_directory('/content/drive/MyDrive/pre_train/dog_cat/train/',
                                              shuffle = True,
-                                             batch_size = 64,
-                                             image_size = (250,250))
+                                             batch_size = 256,
+                                             image_size = (160,160))
 
-validation_dataset = image_dataset_from_directory('./hymenoptera_data/val',
+validation_dataset = image_dataset_from_directory('/content/drive/MyDrive/pre_train/dog_cat/val/',
                                                   shuffle = True,
-                                                  batch_size = 64,
-                                                  image_size = (250,250))
+                                                  batch_size = 256,
+                                                  image_size = (160,160))
 
 print(train_dataset.class_names)
-print(validation_dataset.class_names)
-
-print(train_dataset.class_names) # return the number of image and the name of subfodler
 print(validation_dataset.class_names)
 
 
@@ -59,7 +52,7 @@ for images, labels in train_dataset.take(1):
 # train model from scratch
 
 # Load model
-model1 = tf.keras.applications.VGG16(input_shape = (250,250,3),
+model1 = tf.keras.applications.VGG16(input_shape = (160,160,3),
                                     include_top = False,
                                     weights = None)
 
@@ -82,7 +75,7 @@ prediction_layer = tf.keras.layers.Dense(1)
 
 # Construct a new network
 
-inputs = tf.keras.Input(shape = (250,250,3))
+inputs = tf.keras.Input(shape = (160,160,3))
 x = data_augmentation(inputs)
 x = model1(x)
 x = global_layer(x)
@@ -121,4 +114,107 @@ plt.legend()
 plt.show()
 
 
+# Tranfer learning
 
+model2 = tf.keras.applications.VGG16(input_shape =(160,160,3),
+                                     include_top = False,
+                                     weights = 'imagenet')
+
+model2.trainable = False
+
+data_augmentation = tf.keras.Sequential([
+    tf.keras.layers.experimental.preprocessing.RandomFlip('horizontal'),
+    tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
+    tf.keras.layers.experimental.preprocessing.Rescaling(1./127.5, offset = -1)
+])
+
+global_layer = tf.keras.layers.GlobalMaxPooling2D()
+
+prediction_layer = tf.keras.layers.Dense(1)
+
+# Contruct a new network
+
+inputs = tf.keras.Input(shape = (160,160,3))
+x = data_augmentation(inputs)
+x = model2(x)
+x = global_layer(x)
+x = tf.keras.layers.Dropout(0.2)(x)
+outputs = prediction_layer(x)
+model2 = tf.keras.Model(inputs, outputs)
+
+model2.compile(loss = tf.keras.losses.BinaryCrossentropy(from_logits = True), # from_logits = True: nếu đầu ra là 1 node
+                      optimizer = tf.keras.optimizers.Adam(lr = 0.0001),
+               metrics =['accuracy'])
+
+history_fine = model2.fit(train_dataset, epochs = 50, validation_data= validation_dataset)
+
+plt.plot(history_fine.history['loss'], label = 'train_loss')
+plt.plot(history_fine.history['val_loss'], label = 'val_loss')
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.legend()
+plt.show()
+
+plt.plot(history_fine.history['accuracy'], label = 'train_accuracy')
+plt.plot(history_fine.history['val_accuracy'], label = 'val_accuracy')
+plt.xlabel('epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+# Fine tuning
+
+model3  = tf.keras.applications.VGG16(input_shape = (160,160,3), 
+                                    include_top = False,
+                                    weights = 'imagenet')
+
+model3.summary()
+
+# freeze some first layer
+fine_tune_at = 14
+for layer in model3.layers[:14]:
+  layer.trainable = False
+
+# processing data
+
+data_augmentation = tf.keras.Sequential([
+    tf.keras.layers.experimental.preprocessing.RandomFlip('horizontal'),
+    tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
+    tf.keras.layers.experimental.preprocessing.Rescaling(1./127.5, offset = -1)
+])
+
+# flattening
+global_layer = tf.keras.layers.GlobalMaxPooling2D()
+
+# final layer
+
+prediction_layer = tf.keras.layers.Dense(1)
+
+# Construct a new network
+
+inputs = tf.keras.Input(shape =(160,160,3))
+x = data_augmentation(inputs)
+x =  model3(x)
+x = global_layer(x)
+x = tf.keras.layers.Dropout(0.2)(x)
+outputs = prediction_layer(x)
+model3 = tf.keras.Model(inputs, outputs)
+
+model3.compile(loss = tf.keras.losses.BinaryCrossentropy(from_logits = True),
+                      optimizer = tf.keras.optimizers.Adam(lr = 0.0001),
+               metrics =['accuracy'])
+
+history_fine3 = model3.fit(train_dataset, epochs = 50, validation_data= validation_dataset)
+
+plt.plot(history_fine3.history['loss'], label = 'train_loss')
+plt.plot(history_fine3.history['val_loss'], label = 'val_loss')
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.legend()
+
+plt.plot(history_fine3.history['accuracy'], label = 'train_accuracy')
+plt.plot(history_fine3.history['val_accuracy'], label = 'val_accuracy')
+plt.xlabel('epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
