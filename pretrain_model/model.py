@@ -218,3 +218,53 @@ plt.xlabel('epoch')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
+
+
+# Initial VGG16 wieght for small data
+
+model4  = tf.keras.applications.VGG16(input_shape = (160,160,3), 
+                                    include_top = False,
+                                    weights = 'imagenet')
+
+data_augmentation = tf.keras.Sequential([
+    tf.keras.layers.experimental.preprocessing.RandomFlip('horizontal'),
+    tf.keras.layers.experimental.preprocessing.RandomRotation(0.2),
+    tf.keras.layers.experimental.preprocessing.Rescaling(1./127.5, offset = -1)
+])
+
+# flattening
+global_layer = tf.keras.layers.GlobalMaxPooling2D()
+
+# final layer
+
+prediction_layer = tf.keras.layers.Dense(1)
+
+# Construct a new network
+
+inputs = tf.keras.Input(shape =(160,160,3))
+x = data_augmentation(inputs)
+x =  model4(x)
+x = global_layer(x)
+x = tf.keras.layers.Dropout(0.2)(x)
+outputs = prediction_layer(x)
+model4 = tf.keras.Model(inputs, outputs)
+
+model4.compile(loss = tf.keras.losses.BinaryCrossentropy(from_logits = True), 
+                      optimizer = tf.keras.optimizers.Adam(lr = 0.0001),
+               metrics =['accuracy'])
+
+history_fine4 = model4.fit(train_dataset, epochs = 50, validation_data= validation_dataset)
+
+plt.plot(history_fine4.history['loss'], label = 'train_loss')
+plt.plot(history_fine4.history['val_loss'], label = 'val_loss')
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.legend()
+plt.show()
+
+plt.plot(history_fine4.history['accuracy'], label = 'train_accuracy')
+plt.plot(history_fine4.history['val_accuracy'], label = 'val_accuracy')
+plt.xlabel('epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
