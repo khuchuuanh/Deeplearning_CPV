@@ -23,9 +23,8 @@ I re-coded nvidia's project which is  using CNN to predict driving angles based 
 I using keras tunner to chose Hyperparameter for model which i built for cifar10 dataset
 <p align="center">
   <img src="image_video/keras1.png" width="200">
-  <img src="image_video/keras2.png" width="200">
   <img src="image_video/keras3.png" width="200">
-  after choosing HP
+  <i>After choosing HP</i>
   <img src="image_video/keras5.png" width="200">
 </p>
 
