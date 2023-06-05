@@ -18,3 +18,25 @@ I re-coded nvidia's project which is  using CNN to predict driving angles based 
   <img src="image_video/street.gif" width="200">
   <img src="image_video/predict_angle.gif" width="200">
 </p>
+
+#### Third project
+I using keras tunner to chose Hyperparameter for model which i built for cifar10 dataset
+<p align="center">
+  <img src="image_video/keras1.png" width="200">
+  <img src="image_video/keras3.png" width="200">
+  <i>After choosing HP</i>
+  <img src="image_video/keras5.png" width="200">
+</p>
+
+#### Fourth project
+I used VGG16 model for tranfer learning, fine-tuning, train from scrath, using vgg16 weight as initial for dog and cat dataset
+<p align="center">
+  <img src="image_video/acc1.png" width="200">
+  <img src="image_video/loss1.png" width="200">
+  <img src="image_video/acc2.png" width="200">
+  <img src="image_video/loss2.png" width="200"> 
+   <img src="image_video/acc3.png" width="200">
+  <img src="image_video/loss3.png" width="200">
+   <img src="image_video/acc4.png" width="200">
+  <img src="image_video/loss4.png" width="200">
+</p>
