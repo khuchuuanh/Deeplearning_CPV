@@ -104,7 +104,7 @@ def train_step(image):
   image.assign(clip_0_1(image))
 
 
-  epochs = 10
+epochs = 10
 steps_per_epoch = 50
 
 step =0
