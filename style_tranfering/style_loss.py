@@ -66,3 +66,54 @@ def gram_matrix(input_tensor):
   num_locations = tf.cast(input_shape[1]*input_shape[2], tf.float32)
   return result/(num_locations)
 
+image = tf.Variable(tf.random.uniform(style_image.shape, 
+                                      minval= 0,
+                                      maxval = 1))
+
+print(image.shape)
+
+def clip_0_1(image):
+  return tf.clip_by_value(image, 
+                          clip_value_min = 0.0, 
+                          clip_value_max = 1.0) 
+                                                
+
+display.display(tensor_to_image(image[0]))
+
+
+opt = tf.optimizers.Adam(learning_rate = 0.01,
+                         beta_1= 0.99,
+                         epsilon = 1e-1)
+
+# style loss
+def style_loss(style_output):
+  loss = tf.reduce_mean((gram_matrix(style_output) - gram_matrix(style_targets))**2)
+  return loss
+
+
+@tf.function()
+def train_step(image):
+  with tf.GradientTape() as tape:
+    # compute f1 and f2
+    outputs = compute_feature(image)
+
+    #compute (f1-f2)**2
+    loss = style_loss(outputs)
+
+  grad  = tape.gradient(loss, image)
+  opt.apply_gradients([(grad, image)])
+  image.assign(clip_0_1(image))
+
+
+epochs = 10
+steps_per_epoch = 50
+
+step =0
+for n in range(epochs):
+  for m in range(steps_per_epoch):
+    step += 1 
+    train_step(image)
+    print('.', end = '')
+    display.clear_output(wait = True)
+    display.display(tensor_to_image(image[0]))
+    print('Train step: {}'.format(step))
