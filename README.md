@@ -50,7 +50,7 @@ I implemented style tranfering method
   <img src="style_tranfering/image_style_tranfer/style4.jpg" width="200">
   <img src="style_tranfering/image_style_tranfer/style_loss.png" width="200"><br>
   <i>These are style image and style loss image</i><br>
-  <img src="style_tranfering/image_style_tranfer/train_1000step.png" width="200">
-  <img src="style_tranfering/image_style_tranfer/style_dog (1).png" width="200"><br>
+  <img src="style_tranfering/image_style_tranfer/style_dog (1).png" width="200">
+  <img src="style_tranfering/image_style_tranfer/train_1000step.png" width="200"><br>
   <i>These are images after training with 1000 steps and final image</i><br>
 </p>
