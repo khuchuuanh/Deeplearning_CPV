@@ -52,5 +52,5 @@ I implemented style tranfering method
   <i>These are style image and style loss image</i><br>
   <img src="style_tranfering/image_style_tranfer/style_dog (1).png" width="200">
   <img src="style_tranfering/image_style_tranfer/train_1000step.png" width="200"><br>
-  <i>These are images after training with 1000 steps and final image</i><br>
+  <i>These are final image and image after training with 1000 steps </i><br>
 </p>
