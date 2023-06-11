@@ -13,6 +13,8 @@ import  PIL.Image
 import time
 import functools
 
+
+
 def tensor_to_image(tensor):
   tensor = tensor*255
   tensor = np.array(tensor, dtype=np.uint8)
@@ -226,4 +228,72 @@ for n in range(epochs):
   
 end = time.time()
 print("Total time: {:.1f}".format(end-start))
+
+
+def high_pass_x_y(image):
+  x_var = image[:, :, 1:, :] - image[:, :, :-1, :]
+  y_var = image[:, 1:, :, :] - image[:, :-1, :, :]
+
+  return x_var, y_var
+
+
+x_deltas, y_deltas = high_pass_x_y(content_image)
+
+def total_variation_loss(image):
+  x_deltas, y_deltas = high_pass_x_y(image)
+  return tf.reduce_sum(tf.abs(x_deltas)) + tf.reduce_sum(tf.abs(y_deltas))
+
+total_variation_loss(image).numpy()
+
+tf.image.total_variation(image).numpy()
+
+total_variation_weight=30
+
+
+@tf.function()
+def train_step(image):
+  with tf.GradientTape() as tape:
+    outputs = extractor(image)
+    loss = style_content_loss(outputs)
+    loss += total_variation_weight*tf.image.total_variation(image)
+
+  grad = tape.gradient(loss, image)
+  opt.apply_gradients([(grad, image)])
+  image.assign(clip_0_1(image))
+
+
+opt = tf.keras.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
+image = tf.Variable(content_image)
+
+start = time.time()
+
+epochs = 10
+steps_per_epoch = 100
+
+step = 0
+for n in range(epochs):
+  for m in range(steps_per_epoch):
+    step += 1
+    train_step(image)
+    print(".", end='', flush=True)
+  display.clear_output(wait=True)
+  display.display(tensor_to_image(image))
+  print("Train step: {}".format(step))
+
+end = time.time()
+print("Total time: {:.1f}".format(end-start))
+
+
+file_name = 'style_dog.png'
+tensor_to_image(stylized_image[0]).save(file_name)
+
+try:
+  from google.colab import files
+except ImportError:
+  pass
+else:
+  files.download(file_name)
+
+
+
 
