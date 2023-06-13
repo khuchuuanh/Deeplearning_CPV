@@ -40,3 +40,17 @@ I used VGG16 model for tranfer learning, fine-tuning, train from scrath, using v
    <img src="image_video/acc4.png" width="200">
   <img src="image_video/loss4.png" width="200">
 </p>
+
+#### Fifth project
+I implemented style tranfering method
+<p align="center">
+  <img src="style_tranfering/image_style_tranfer/content.jpg" width="200">
+  <img src="style_tranfering/image_style_tranfer/content_loss.png" width="200"><br>
+  <i>These are content image and content loss image</i><br>
+  <img src="style_tranfering/image_style_tranfer/style4.jpg" width="200">
+  <img src="style_tranfering/image_style_tranfer/style_loss.png" width="200"><br>
+  <i>These are style image and style loss image</i><br>
+  <img src="style_tranfering/image_style_tranfer/style_dog (1).png" width="200">
+  <img src="style_tranfering/image_style_tranfer/train_1000step.png" width="200"><br>
+  <i>These are final image and image after training with 1000 steps </i><br>
+</p>
