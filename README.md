@@ -6,8 +6,8 @@ Here is my python source code for coding deeplearning based on several datasets 
 I used to CNN of deeplearning to extract feature image based on fashion-mnist dataset.
 <p align="center">
   <img src="image_video/mnist.png" width="200">
-  <img src="image_video/loss.png" width="300">
-  <img src="image_video/accuracy.png" width="300">
+  <img src="image_video/loss.png" width="200">
+  <img src="image_video/accuracy.png" width="200">
 </p>
 
 #### Second project
@@ -22,7 +22,6 @@ I re-coded nvidia's project which is  using CNN to predict driving angles based 
 #### Third project
 I using keras tunner to chose Hyperparameter for model which i built for cifar10 dataset
 <p align="center">
-  <img src="image_video/keras1.png" width="200">
   <img src="image_video/keras3.png" width="200">
   <i>After choosing HP</i>
   <img src="image_video/keras5.png" width="200">
