@@ -2,6 +2,11 @@ import cv2
 import random
 import numpy as np
 import csv
+import tensorflow as tf
+import pandas as pd
+import os
+from PIL import Image
+
 xs = []
 ys = []
 
@@ -52,6 +57,5 @@ def LoadValBatch(batch_size):
         y_out.append([val_ys[(val_batch_pointer + i) % num_val_images]])
     val_batch_pointer += batch_size
     return x_out, y_out
-
 
 
