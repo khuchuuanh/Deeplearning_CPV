@@ -19,28 +19,18 @@ I re-coded nvidia's project which is  using CNN to predict driving angles based 
   <img src="image_video/predict_angle.gif" width="200">
 </p>
 
+
 #### Third project
-I using keras tunner to chose Hyperparameter for model which i built for cifar10 dataset
+I used alexnet model for tranfer learning, fine-tuning, train from scrath, using vgg16 weight as initial for dog and cat dataset and then I deployed on the website
 <p align="center">
-  <img src="image_video/keras3.png" width="200">
-  <i>After choosing HP</i>
-  <img src="image_video/keras5.png" width="200">
+  <img src="image_video/dogorcat.png" width="200">
+  <i>Return the result</i>
+  <img src="image_video/return.png" width="300">
+  
+  
 </p>
 
 #### Fourth project
-I used VGG16 model for tranfer learning, fine-tuning, train from scrath, using vgg16 weight as initial for dog and cat dataset
-<p align="center">
-  <img src="image_video/acc1.png" width="200">
-  <img src="image_video/loss1.png" width="200">
-  <img src="image_video/acc2.png" width="200">
-  <img src="image_video/loss2.png" width="200"> 
-   <img src="image_video/acc3.png" width="200">
-  <img src="image_video/loss3.png" width="200">
-   <img src="image_video/acc4.png" width="200">
-  <img src="image_video/loss4.png" width="200">
-</p>
-
-#### Fifth project
 I implemented style tranfering method
 <p align="center">
   <img src="style_tranfering/image_style_tranfer/content.jpg" width="200">
@@ -52,4 +42,13 @@ I implemented style tranfering method
   <img src="style_tranfering/image_style_tranfer/style_dog (1).png" width="200">
   <img src="style_tranfering/image_style_tranfer/train_1000step.png" width="200"><br>
   <i>These are final image and image after training with 1000 steps </i><br>
+</p>
+
+
+#### Fifth project
+I using keras tunner to chose Hyperparameter for model which i built for cifar10 dataset
+<p align="center">
+  <img src="image_video/keras3.png" width="200">
+  <i>After choosing HP</i>
+  <img src="image_video/keras5.png" width="200">
 </p>
